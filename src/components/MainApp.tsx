@@ -378,18 +378,25 @@ export default function MainApp() {
     let isMounted = true;
     const initializeApp = async () => {
       try {
-        const response = await fetch('/api/ip-info');
+        const response = await fetch('https://ipapi.co/json/', {
+          signal: AbortSignal.timeout(5000)
+        });
         const data = await response.json();
         if (!isMounted) return;
-        setIpInfo({ ip: data.ip || '未知', country: data.country || 'US' });
-        if (data.country && data.accurate) {
-          const detectedCountry = getCountryConfig(data.country);
+
+        const ip = data.ip || '未知';
+        const country = data.country_code || 'US';
+
+        setIpInfo({ ip, country });
+
+        if (country && country !== 'US') {
+          const detectedCountry = getCountryConfig(country);
           if (detectedCountry) setSelectedCountry(detectedCountry);
         }
         setIsInitialized(true);
       } catch (error) {
         if (isMounted) {
-          setIpInfo({ ip: '检测失败', country: 'US' });
+          setIpInfo({ ip: '未知', country: 'US' });
           setIsInitialized(true);
         }
       }

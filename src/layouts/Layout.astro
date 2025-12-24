@@ -52,7 +52,7 @@ const { title = '脸书小助手' } = Astro.props;
   </head>
   <body class="antialiased">
     <BackgroundProvider client:only="react">
-      <SharedBackground client:load />
+      <SharedBackground client:only="react" />
       <slot />
     </BackgroundProvider>
   </body>

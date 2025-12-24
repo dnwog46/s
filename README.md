@@ -6,21 +6,21 @@
 
 ### 技术栈迁移
 - ✅ 从 **Next.js** 迁移至 **Astro 5**
+- ✅ 纯静态站点,无需服务器
 - ✅ 保留 React 组件(通过 Astro Islands)
-- ✅ 使用 **Vercel Edge Functions** 适配器
-- ✅ 改进的服务器端渲染性能
+- ✅ 支持任意静态托管平台
 
 ### IP 检测优化
-- ✅ 简化为使用 **单一可靠的第三方 API** (ip-api.com)
-- ✅ 移除多服务竞速策略,提高响应速度
-- ✅ 优化缓存机制
-- ✅ 免费且稳定(每月 45 请求/分钟限制)
+- ✅ 客户端直接调用 **ipapi.co API**
+- ✅ 无需后端服务器
+- ✅ 免费且稳定
+- ✅ 5秒超时保护
 
 ### 性能优化
 - 更快的首屏加载速度
 - 更小的 JavaScript 包体积
-- 服务器端渲染优化
-- 边缘函数部署支持
+- 完全静态化,CDN 友好
+- 可部署到任意静态托管平台
 
 ## 项目结构
 
@@ -43,11 +43,9 @@
 │   │   └── backgroundContext.tsx # 背景上下文
 │   ├── pages/          # Astro 页面
 │   │   ├── index.astro         # 首页
-│   │   ├── mail/
-│   │   │   ├── index.astro    # 临时邮箱页面
-│   │   │   └── favorites.astro # 收藏页面
-│   │   └── api/
-│   │       └── ip-info.ts     # IP 检测 API
+│   │   └── mail/
+│   │       ├── index.astro    # 临时邮箱页面
+│   │       └── favorites.astro # 收藏页面
 │   └── styles/         # 全局样式
 │       └── globals.css
 ├── astro.config.mjs    # Astro 配置
@@ -71,27 +69,34 @@ npm run build
 npm run preview
 ```
 
-## API 端点
+## IP 检测
 
-### IP 检测 API
-- **路径**: `/api/ip-info`
-- **方法**: GET
-- **服务商**: ip-api.com
+项目使用客户端 IP 检测:
+- **服务商**: ipapi.co
+- **方法**: 客户端直接调用
 - **特性**:
   - 自动检测用户真实 IP
-  - 支持代理和 CDN 环境
-  - 5 分钟缓存
-  - 地理位置信息(国家、城市、时区等)
+  - 免费使用
+  - 5 秒超时保护
+  - 返回国家代码和 IP 地址
 
 ## 部署
 
-项目已配置 Vercel 适配器,可直接部署到 Vercel:
+项目为纯静态站点,可部署到任意静态托管平台:
 
+### 构建
 ```bash
 npm run build
 ```
 
-构建后的文件会输出到 `.vercel/output` 目录,可直接上传到 Vercel。
+构建后的文件输出到 `dist/` 目录。
+
+### 支持的托管平台
+- Vercel
+- Netlify
+- GitHub Pages
+- Cloudflare Pages
+- 任意静态文件服务器
 
 ## 主要功能
 
